@@ -85,11 +85,11 @@ class Marry(commands.Cog):
                 await member.add_roles(role)
                 await ctx.author.add_roles(role)
 
-                sql = "INSERT INTO Roles VALUES(%s,%s,%s)"
-                val = (member.id,member.name,658008634717896705)
+                sql = "INSERT INTO Roles VALUES(%s,%s)"
+                val = (member.id,658008634717896705)
                 bdcursor.execute(sql,val)
 
-                val = (ctx.author.id,ctx.author.name,658008634717896705)
+                val = (ctx.author.id,658008634717896705)
                 bdcursor.execute(sql,val)
 
             elif str(info[0]) == "❌":

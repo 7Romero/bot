@@ -51,7 +51,6 @@ class Users(commands.Cog):
             embed.add_field(name="🎁 Коробок:", value="```{}```".format(listinfo[0][1]), inline=True)
             embed.add_field(name="✉️ Сообщений:", value="```{} ```".format(listinfo[0][2]), inline=True)
             embed.add_field(name="⏲️ Голосовой онлайн:", value="```{} ч```".format(int(listinfo[0][3]) // 60), inline=True)
-            print(listinfo[0][1])
             if listinfo[0][4] == "Одинок":
                 embed.add_field(name="💙 Пара:", value="```{} ```".format(listinfo[0][4]), inline=True)
             else:

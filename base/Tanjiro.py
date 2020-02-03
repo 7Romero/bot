@@ -19,6 +19,9 @@ class Tanjiro(Client):
         print("Hello,my name is {},and i boot for you.".format(self.bot_name))
         @self.listen()
         async def on_ready():
+
+            await self.change_presence(activity=discord.Game(name="2.0 version"))
+
             print("\nI am ready!! ")
             await Events.calculated_online(self.get_guild(651865140375060496))
 
@@ -30,7 +33,7 @@ class Tanjiro(Client):
         async def on_message(message):
             if message.guild == None:
                 return 0
-            await asyncio.sleep(3)
+            await asyncio.sleep(5)
             if not message:
                 return 0 
             await Events.add_message(message)

@@ -45,8 +45,9 @@ class helps(commands.Cog):
                                                     "/set - использовать чтоб управлять BD.\n"
                                                     "/create_akk - создать аккаунт участнику.\n"
                                                     "/add_moder - добавить модератора.\n"
-                                                    "del_moder - удалить модератора.\n"
-                                                    "/set_moder - модифицировать аккаунт модератора.```", inline=False)
+                                                    "/del_moder - удалить модератора.\n"
+                                                    "/set_moder - модифицировать аккаунт модератора."
+                                                    "/create_all_akk - создать всему серверу аккаунты в mysql (Если их нет!!)```", inline=False)
         message = await ctx.send("<@!{}> ответ на твой запрос был отправлен в личный сообщения.".format(ctx.author.id))
         await ctx.author.send(embed=embed)
         await asyncio.sleep(5)

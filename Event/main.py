@@ -50,56 +50,60 @@ async def NewMember(member):
     myBD.commit()
 
 async def add_message(message):
-    myBD = connectBD()
-    bdcursor = myBD.cursor()
+    try:
+        myBD = connectBD()
+        bdcursor = myBD.cursor()
 
-    bdcursor.execute("SELECT chat_message FROM Users WHERE id = {}".format(message.author.id))
-    select = bdcursor.fetchall()
-    if not select:
-        myBD.commit()
-        await NewMember(message.author)
+        bdcursor.execute("SELECT chat_message FROM Users WHERE id = {}".format(message.author.id))
+        select = bdcursor.fetchall()
+        if not select:
+            myBD.commit()
+            await NewMember(message.author)
+            return 0
+        chat_message = int(select[0][0])
+        chat_message += 1
+
+        if chat_message == 500:
+            role = message.author.guild.get_role(657135159711236096)
+            await message.author.add_roles(role)
+
+            sql = "INSERT INTO Roles VALUES (%s,%s)"
+            val = (message.author.id,role.id)
+            bdcursor.execute(sql,val)
+        elif chat_message == 1000:
+            role = message.author.guild.get_role(657135156322369565)
+            await message.author.add_roles(role)
+
+            sql = "INSERT INTO Roles VALUES (%s,%s)"
+            val = (message.author.id,role.id)
+            bdcursor.execute(sql,val)
+
+        elif chat_message == 2000:
+            role = message.author.guild.get_role(657135152790634499)
+            await message.author.add_roles(role)
+
+            sql = "INSERT INTO Roles VALUES (%s,%s)"
+            val = (message.author.id,role.id)
+            bdcursor.execute(sql,val)
+        elif chat_message == 4000:
+            role = message.author.guild.get_role(657135132557443076)
+            await message.author.add_roles(role)
+
+            sql = "INSERT INTO Roles VALUES (%s,%s)"
+            val = (message.author.id,role.id)
+            bdcursor.execute(sql,val)
+        elif chat_message == 10000:
+            role = message.author.guild.get_role(657135129872826369)
+            await message.author.add_roles(role)
+
+            sql = "INSERT INTO Roles VALUES (%s,%s)"
+            val = (message.author.id,role.id)
+            bdcursor.execute(sql,val)
+
+        bdcursor.execute("UPDATE Users set chat_message = {} WHERE id = {}".format(chat_message,message.author.id))
+    except discord.errors.Forbidden:
         return 0
-    chat_message = int(select[0][0])
-    chat_message += 1
-
-    if chat_message == 500:
-        role = message.author.guild.get_role(657135159711236096)
-        await message.author.add_roles(role)
-
-        sql = "INSERT INTO Roles VALUES (%s,%s)"
-        val = (message.author.id,role.id)
-        bdcursor.execute(sql,val)
-    elif chat_message == 1000:
-        role = message.author.guild.get_role(657135156322369565)
-        await message.author.add_roles(role)
-
-        sql = "INSERT INTO Roles VALUES (%s,%s)"
-        val = (message.author.id,role.id)
-        bdcursor.execute(sql,val)
-
-    elif chat_message == 2000:
-        role = message.author.guild.get_role(657135152790634499)
-        await message.author.add_roles(role)
-
-        sql = "INSERT INTO Roles VALUES (%s,%s)"
-        val = (message.author.id,role.id)
-        bdcursor.execute(sql,val)
-    elif chat_message == 4000:
-        role = message.author.guild.get_role(657135132557443076)
-        await message.author.add_roles(role)
-
-        sql = "INSERT INTO Roles VALUES (%s,%s)"
-        val = (message.author.id,role.id)
-        bdcursor.execute(sql,val)
-    elif chat_message == 10000:
-        role = message.author.guild.get_role(657135129872826369)
-        await message.author.add_roles(role)
-
-        sql = "INSERT INTO Roles VALUES (%s,%s)"
-        val = (message.author.id,role.id)
-        bdcursor.execute(sql,val)
-
-    bdcursor.execute("UPDATE Users set chat_message = {} WHERE id = {}".format(chat_message,message.author.id))
+    
     myBD.commit()
 
 async def calculated_online(guild):

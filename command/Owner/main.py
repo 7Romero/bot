@@ -57,8 +57,8 @@ class Owner(commands.Cog):
             member = ctx.guild.get_member(findid(arg1))
             await member.add_roles(role)
 
-            sql = "INSERT INTO Roles VALUES (%s,%s,%s)"
-            val = (member.id,member.name,role.id) 
+            sql = "INSERT INTO Roles VALUES (%s,%s)"
+            val = (member.id,role.id) 
             bdcursor.execute(sql,val)
 
             mybd.commit()
@@ -282,8 +282,8 @@ class Owner(commands.Cog):
                 mybd.commit()
                 return 0
 
-            sql = "INSERT INTO Moderator (id,name) VALUES (%s)"
-            val = (member.id)
+            sql = "INSERT INTO Moderator (id,permision_cls) VALUES (%s,%s)"
+            val = (member.id,1)
             bdcursor.execute(sql,val)
 
             embed=discord.Embed(title="Информация о модерации", description="Поздравляю вы были назначены модератором.", color=0x8080ff)
@@ -294,8 +294,8 @@ class Owner(commands.Cog):
             await member.send(embed=embed)
 
             role = ctx.guild.get_role(655856459044618256)
-            sql = "INSERT INTO Roles VALUES(%s,%s,%s)"
-            val = (member.id,role.name,role.id)
+            sql = "INSERT INTO Roles VALUES(%s,%s)"
+            val = (member.id,role.id)
             bdcursor.execute(sql,val)
             await member.add_roles(role)
         except ValueError:
@@ -406,7 +406,7 @@ class Owner(commands.Cog):
 
         if not arg1 or not arg2 or not arg3:
             helpmessage = await ctx.channel.send("Привет <@{}>, я вижу что у тебя проблемы с командой set_moder! Я тебе помогу:"
-                                    "```/set_moder [@user] [mute | gethere | goto | kick | ban | disconect | warn | antiafk | hide | clear | owner ] [1 / 0] ```\n".format(ctx.author.id))
+                                    "```/set_moder [@user] [cls | mute | gethere | goto | kick | ban | disconect | warn | antiafk | hide | clear | owner | all ] [1 / 0] ```\n".format(ctx.author.id))
             await asyncio.sleep(5)
             await helpmessage.delete()
             mybd.commit()
@@ -422,7 +422,9 @@ class Owner(commands.Cog):
                 mybd.commit()
                 return 0
 
-            if arg2 == "mute":
+            if arg2 == "cls":
+                bdcursor.execute("UPDATE Moderator set permision_cls = {} WHERE id = {}".format(arg3,member.id))
+            elif arg2 == "mute":
                 bdcursor.execute("UPDATE Moderator set permision_mute = {} WHERE id = {}".format(arg3,member.id))
             elif arg2 == "gethere":
                 bdcursor.execute("UPDATE Moderator set permision_gethere = {} WHERE id = {}".format(arg3,member.id))
@@ -444,6 +446,9 @@ class Owner(commands.Cog):
                 bdcursor.execute("UPDATE Moderator set permision_clear = {} WHERE id = {}".format(arg3,member.id))
             elif arg2 == "owner":
                 bdcursor.execute("UPDATE Moderator set permision_owner = {} WHERE id = {}".format(arg3,member.id))
+            elif arg2 == "all":
+                bdcursor.execute("UPDATE Moderator set permision_mute = {},permision_gethere = {},permision_goto = {},permision_kick = {},permision_ban = {},permision_disconect = {},"
+                                "permision_cls = {},permision_warn = {},permision_antiafk = {},permision_hide = {},permision_clear = {} WHERE id = {}".format(arg3,arg3,arg3,arg3,arg3,arg3,arg3,arg3,arg3,arg3,arg3,member.id))
 
             embed=discord.Embed(title="Информация о модерации", description="Ваш аккаунта был модифицирован.", color=0x8080ff)
             embed.add_field(name="Важно:", value="Ваш аккаунт был модифицирован администратором {}.\n"
